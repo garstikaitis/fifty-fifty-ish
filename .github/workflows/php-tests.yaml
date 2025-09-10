@@ -42,5 +42,12 @@ jobs:
             -   name: Install Composer dependencies
                 run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist
 
-            -   name: Integration Tests
+            -   name: CQ, Format & Test
                 run: composer run test
+
+            -   name: Commit changes
+                uses: stefanzweifel/git-auto-commit-action@v4
+                with:
+                    commit_message: 'CI: fix CQ & format'
+                    commit_author: 'GitHub Action <actions@github.com>'
+                    commit_user_email: 'action@github.com'
