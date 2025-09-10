@@ -39,11 +39,13 @@ jobs:
             -   name: Set Version
                 run: composer config version "dev-main"
 
-            -   name: Set application key
-                run: php artisan key:generate
-
             -   name: Install Composer dependencies
                 run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist
+
+            -   name: Prepare Laravel Application
+                run: |
+                    cp .env.ci .env
+                    php artisan key:generate
 
             -   name: CQ, Format & Test
                 run: composer run test
