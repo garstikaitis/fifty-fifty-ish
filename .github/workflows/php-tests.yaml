@@ -53,6 +53,6 @@ jobs:
             -   name: Commit changes
                 uses: stefanzweifel/git-auto-commit-action@v4
                 with:
-                    commit_message: 'CI: fix CQ & format'
+                    commit_message: 'ci: fix CQ & format'
                     commit_author: 'GitHub Action <actions@github.com>'
                     commit_user_email: 'action@github.com'
