@@ -1,5 +1,5 @@
 <?php
 
-test('exports expenses', function () {
+declare(strict_types=1);
 
-});
+test('exports expenses', function (): void {});

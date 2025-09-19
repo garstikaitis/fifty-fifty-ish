@@ -14,6 +14,6 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-       Expense::factory()->createMany(300);
+        Expense::factory()->createMany(300);
     }
 }

@@ -10,5 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 final class Expense extends Model
 {
     use HasFactory;
+
     public $timestamps = false;
 }

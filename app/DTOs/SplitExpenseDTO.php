@@ -1,11 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTOs;
 
-class SplitExpenseDTO
-{
-    public function __construct()
-    {
-
-    }
-}
+final class SplitExpenseDTO {}

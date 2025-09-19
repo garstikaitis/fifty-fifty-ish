@@ -1,5 +1,5 @@
 <?php
 
-test('ExpenseSplitter tests', function () {
+declare(strict_types=1);
 
-});
+test('ExpenseSplitter tests', function (): void {});
