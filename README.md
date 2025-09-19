@@ -18,18 +18,12 @@ It accumulates remainders across each expense and splits them in half. In the ev
 # Data structure
 
 ```sql
-expense_groups:
-├── id
-├── period_name
-├── payer_a  
-├── payer_b
-└── timestamps
-
 expenses:
 ├── id
-├── expense_group_id (FK)
+├── payer_a_name
+├── payer_b_name
 ├── title
-├── amount (decimal 10,2)  
+├── amount (int)  
 ├── expense_date
 └── timestamps
 ```
