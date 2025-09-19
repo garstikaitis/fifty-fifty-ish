@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('expense_group_id')->unsigned();
+            $table->string('payer_a_name');
+            $table->string('payer_b_name');
             $table->string('title');
-            $table->decimal('amount', 10, 2);
+            $table->integer('amount');
             $table->datetime('occurred_at');
-            $table->timestamps();
         });
     }
 

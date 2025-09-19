@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\ExpenseGroup;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,9 +17,10 @@ class ExpenseFactory extends Factory
     public function definition(): array
     {
         return [
-            'expense_group_id' => ExpenseGroup::factory(),
-            'title' => $this->faker->sentence,
-            'amount' => $this->faker->randomFloat(2, 1, 100),
+            'payer_a_name' => $this->faker->name(),
+            'payer_b_name' => $this->faker->name(),
+            'title' => $this->faker->words(3, true),
+            'amount' => $this->faker->numberBetween(100, 1000),
             'occurred_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
