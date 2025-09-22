@@ -7,10 +7,11 @@ namespace App\Actions;
 use App\Models\Expense;
 use App\Services\ExpenseSplitter;
 
-final class ExportExpenses {
-    public function handle()
+final class ExportExpenses
+{
+    public function handle(): void
     {
         $expenses = Expense::all();
-        ExpenseSplitter::split($expenses);
+        (new ExpenseSplitter())->split($expenses);
     }
 }

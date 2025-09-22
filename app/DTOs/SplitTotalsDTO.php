@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTOs;
 
-readonly class SplitTotalsDTO
+final readonly class SplitTotalsDTO
 {
     public function __construct(
         public float $totalAmount,
@@ -20,5 +22,4 @@ readonly class SplitTotalsDTO
             'difference' => $this->difference,
         ];
     }
-
 }

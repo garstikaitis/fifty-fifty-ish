@@ -1,21 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Services\ExpenseSplitter;
 use App\Utils\Currency;
-use Illuminate\Support\Collection;
 
 function createExpense(string $title, int $amount): object
 {
-    return (object)[
+    return (object) [
         'title' => $title,
         'amount' => $amount,
     ];
 }
 
+describe('ExpenseSplitter Service', function (): void {
 
-describe('ExpenseSplitter Service', function () {
-
-    test('handles empty expense collection', function ($data) {
+    test('handles empty expense collection', function ($data): void {
         $result = new ExpenseSplitter()->split($data);
 
         expect($result->splits)->toBeEmpty()
@@ -25,7 +25,7 @@ describe('ExpenseSplitter Service', function () {
             ->and($result->totals->difference)->toBe(0.00);
     })->with([collect()]);
 
-    test('splits even amounts correctly', function ($data) {
+    test('splits even amounts correctly', function ($data): void {
         $result = new ExpenseSplitter()->split($data);
 
         expect($result->splits)->toHaveCount(1);
@@ -40,10 +40,10 @@ describe('ExpenseSplitter Service', function () {
             ->and($result->totals->partyBTotal)->toBe(50.00)
             ->and($result->totals->difference)->toBe(0.00);
     })->with([collect([
-        createExpense('Fuel', 10000)
+        createExpense('Fuel', 10000),
     ])]);
 
-    test('handles single cent remainder correctly', function () {
+    test('handles single cent remainder correctly', function (): void {
         $expenses = collect([
             createExpense('Fuel', 10001),
         ]);
@@ -59,7 +59,7 @@ describe('ExpenseSplitter Service', function () {
             ->and($result->totals->partyATotal)->toBeGreaterThan($result->totals->partyBTotal);
     });
 
-    test('distributes multiple remainders fairly-ish', function ($data) {
+    test('distributes multiple remainders fairly-ish', function ($data): void {
 
         $result = new ExpenseSplitter()->split($data);
 
@@ -88,7 +88,7 @@ describe('ExpenseSplitter Service', function () {
         createExpense('Oil', 11717),
     ])]);
 
-    test('total always matches original amounts', function () {
+    test('total always matches original amounts', function (): void {
         $amounts = [12345, 6789, 23456, 8912, 34567];
 
         $expenses = collect();
@@ -105,7 +105,7 @@ describe('ExpenseSplitter Service', function () {
             ->and($splitTotal)->toBe($originalTotal);
     });
 
-    test('handles zero amounts', function ($data) {
+    test('handles zero amounts', function ($data): void {
 
         $result = new ExpenseSplitter()->split($data);
 
@@ -114,7 +114,7 @@ describe('ExpenseSplitter Service', function () {
             ->and($split->totalAmount)->toBe(0.00)
             ->and($split->partyAAmount)->toBe(0.00)
             ->and($split->partyBAmount)->toBe(0.00);
-    })->with([ collect([
+    })->with([collect([
         createExpense('Free Item', 0),
     ])]);
 });

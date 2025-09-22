@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\DTOs\ExpenseSplitDTO;
@@ -8,7 +10,7 @@ use App\DTOs\SplitTotalsDTO;
 use App\Utils\Currency;
 use Illuminate\Support\Collection;
 
-class ExpenseSplitter
+final class ExpenseSplitter
 {
     private const int PARTIES_COUNT = 2;
 
@@ -55,7 +57,7 @@ class ExpenseSplitter
     private function findRemainderIndexes(array $splits): array
     {
         return array_keys(
-            array_filter($splits, fn($splitData) => $splitData['remainder'] > 0)
+            array_filter($splits, fn (array $splitData): bool => $splitData['remainder'] > 0)
         );
     }
 
@@ -120,7 +122,7 @@ class ExpenseSplitter
     {
         return new SplitResultDTO(
             splits: [],
-            totals: new SplitTotalsDTO(totalAmount: 0.00,partyATotal:  0.00,partyBTotal:  0.00, difference: 0.00)
+            totals: new SplitTotalsDTO(totalAmount: 0.00, partyATotal: 0.00, partyBTotal: 0.00, difference: 0.00)
         );
     }
 }

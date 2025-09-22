@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTOs;
 
-readonly class ExpenseSplitDTO
+final readonly class ExpenseSplitDTO
 {
     public function __construct(
         public string $title,

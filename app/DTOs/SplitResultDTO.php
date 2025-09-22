@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTOs;
 
-readonly class SplitResultDTO
+final readonly class SplitResultDTO
 {
     /**
-     * @param ExpenseSplitDTO[] $splits
-     * @param SplitTotalsDTO $totals
+     * @param  ExpenseSplitDTO[]  $splits
      */
     public function __construct(
         public array $splits,
