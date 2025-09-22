@@ -12,6 +12,6 @@ final class ExportExpenses
     public function handle(): void
     {
         $expenses = Expense::all();
-        (new ExpenseSplitter())->split($expenses);
+        new ExpenseSplitter()->split($expenses);
     }
 }
