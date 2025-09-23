@@ -19,8 +19,8 @@ final class ExpenseFactory extends Factory
     public function definition(): array
     {
         return [
-            'payer_a_name' => $this->faker->name(),
-            'payer_b_name' => $this->faker->name(),
+            'payer_a_name' => 'Driver #1',
+            'payer_b_name' => 'Driver #2',
             'title' => $this->faker->words(3, true),
             'amount' => $this->faker->numberBetween(100, 1000),
             'occurred_at' => $this->faker->dateTimeBetween('-1 year', 'now'),

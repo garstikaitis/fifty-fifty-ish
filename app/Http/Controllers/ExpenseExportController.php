@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
+use App\Actions\ExportExpenses;
+use App\Models\Expense;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final class ExpenseExportController extends Controller
 {
-    public function __invoke(): JsonResponse
+    public function __invoke(Request $request, ExportExpenses $action): StreamedResponse
     {
-        return response()->json(['success' => true]);
+        return $action
+            ->withQuery(Expense::query())
+            ->withChunkSize(200)
+            ->handle();
     }
 }
