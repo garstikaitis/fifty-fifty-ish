@@ -25,7 +25,7 @@ describe('ExportExpensesTest', function (): void {
             ->and($content)->toContain('Total:');
     });
 
-    it('handles chunking correctly with multiple chunks', function () {
+    it('handles chunking correctly with multiple chunks', function (): void {
         // Create 2+ chunks
         Expense::factory()->count(450)->create();
 
