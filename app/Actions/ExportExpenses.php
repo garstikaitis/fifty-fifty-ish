@@ -1,39 +1,47 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions;
 
 use App\DTOs\ExpenseSplitDTO;
-use App\Models\Expense;
 use App\Services\ExpenseSplitter;
 use App\Utils\Currency;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class ExportExpenses
+final class ExportExpenses
 {
     private int $chunkSize = 1000;
+
     private ?Builder $query = null;
+
     private int $partyATotalAmount = 0;
+
     private int $partyBTotalAmount = 0;
+
     private int $totalAmount = 0;
 
     public function withChunkSize(int $size): self
     {
         $this->chunkSize = $size;
+
         return $this;
     }
 
     public function withQuery(Builder $query): self
     {
         $this->query = $query;
+
         return $this;
     }
 
     public function handle(): StreamedResponse
     {
-        if(!$this->query) throw new Exception('No query set. Call withQuery() first');
+        if (! $this->query instanceof Builder) {
+            throw new Exception('No query set. Call withQuery() first');
+        }
 
         $responseHeaders = [
             'Content-Type' => 'text/csv',
@@ -43,21 +51,21 @@ class ExportExpenses
             'Expires' => '0',
         ];
 
-        return new StreamedResponse(function () {
+        return new StreamedResponse(function (): void {
             $handle = fopen('php://output', 'w');
 
-            fputcsv($handle, $this->getRowHeaders());
+            fputcsv($handle, $this->getRowHeaders(), escape: '\\');
 
-            $this->query->chunk($this->chunkSize, function ($models) use ($handle) {
+            $this->query->chunk($this->chunkSize, function ($models) use ($handle): void {
                 $expenses = new ExpenseSplitter()->split($models);
                 $this->partyATotalAmount += Currency::toMinorUnits($expenses->totals->partyATotal);
                 $this->partyBTotalAmount += Currency::toMinorUnits($expenses->totals->partyBTotal);
                 $this->totalAmount += Currency::toMinorUnits($expenses->totals->totalAmount);
                 foreach ($expenses->splits as $expense) {
-                    fputcsv($handle, $this->formatRow($expense));
+                    fputcsv($handle, $this->formatRow($expense), escape: '\\');
                 }
 
-                if (ob_get_level()) {
+                if (ob_get_level() !== 0) {
                     ob_flush();
                 }
                 flush();
@@ -76,7 +84,8 @@ class ExportExpenses
             Currency::toMajorUnits($this->totalAmount),
             Currency::toMajorUnits($this->partyATotalAmount),
             Currency::toMajorUnits($this->partyBTotalAmount),
-        ]);
+        ],
+            escape: '\\');
     }
 
     private function formatRow(ExpenseSplitDTO $expense): array
@@ -85,7 +94,7 @@ class ExportExpenses
             $expense->title,
             $expense->totalAmount,
             $expense->partyAAmount,
-            $expense->partyBAmount
+            $expense->partyBAmount,
         ];
     }
 
@@ -96,7 +105,7 @@ class ExportExpenses
             'Amount',
             // We can hardcode these names since they match the ones in database
             'Driver #1',
-            'Driver #2'
+            'Driver #2',
         ];
     }
 }
