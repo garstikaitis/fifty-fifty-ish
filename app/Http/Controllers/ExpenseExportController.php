@@ -14,7 +14,7 @@ final class ExpenseExportController extends Controller
     public function __invoke(Request $request, ExportExpenses $action): StreamedResponse
     {
         return $action
-            ->withQuery(Expense::query())
+            ->withQuery(Expense::query()->select(['title', 'amount']))
             ->withChunkSize(200)
             ->handle();
     }

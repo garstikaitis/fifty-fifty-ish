@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->string('payer_a_name');
-            $table->string('payer_b_name');
+            $table->string('party_a_name');
+            $table->string('party_b_name');
             $table->string('title');
             $table->integer('amount');
             $table->datetime('occurred_at');

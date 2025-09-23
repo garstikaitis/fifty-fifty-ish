@@ -84,8 +84,7 @@ final class ExportExpenses
             Currency::toMajorUnits($this->totalAmount),
             Currency::toMajorUnits($this->partyATotalAmount),
             Currency::toMajorUnits($this->partyBTotalAmount),
-        ],
-            escape: '\\');
+        ], escape: '\\');
     }
 
     private function formatRow(ExpenseSplitDTO $expense): array

@@ -20,16 +20,21 @@ It accumulates remainders across each expense and splits them in half. In the ev
 ```sql
 expenses:
 ├── id
-├── payer_a_name
-├── payer_b_name
+├── party_a_name
+├── party_b_name
 ├── title
 ├── amount (int)  
-├── expense_date
-└── timestamps
+├── occured_at
 ```
 
 # ScratchBook 
 
-- Should we store remainders/split in database or should we calculate per row upon request? 
-- Should we support more than 2 participants?
-- Store amount as decimal/string/int?
+- Should we store remainders/split in database or should we calculate per row upon request?
+  - We will calculate remainders for each chunk of expenses at runtime. This potentially could be changed when dealing with massive datasets. The possible changes are:
+    - Run export expenses job in queue and send result via mail/slack/etc.
+    - Store amounts per expense in database
+- Should we support more than 2 drivers?
+  - Current implementation assumes that there are 2 drivers and they are named "Driver #1" and "Driver #2". 
+- Should we store amount as decimal/string/int?
+  - Every amount is stored as integer. this way we are sure we don't get floating point errors and still keep the possibility to use DB aggregate methods (SUM, AVG)
+  - In order to support different currencies that use different number of floating points than 2 - improvement could be to add a currency column to expenses table and adjust `Currency` class
