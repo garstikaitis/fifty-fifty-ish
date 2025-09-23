@@ -25,32 +25,12 @@ describe('ExportExpensesTest', function () {
             ->and($content)->toContain('Total:') ;
     });
 
-    it('can export large number of expenses', function () {
-        // Arrange - Create more expenses than chunk size to test chunking
-        Expense::factory()->count(250)->create(); // More than chunk size of 200
-
-        // Act
-        $response = $this->get(route('expenses.export'));
-
-        // Assert
-        $response->assertStatus(200);
-        $response->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
-
-        $content = $response->streamedContent();
-        $lines = explode("\n", trim($content));
-
-        // Should have header + 250 data rows + totals row (at minimum)
-        expect(count($lines))->toBeGreaterThanOrEqual(252);
-    });
-
     it('handles chunking correctly with multiple chunks', function () {
         // Arrange - Create 450 expenses (2+ chunks)
         Expense::factory()->count(450)->create();
 
-        // Act
         $response = $this->get(route('expenses.export'));
 
-        // Assert
         $response->assertStatus(200);
         $content = $response->streamedContent();
         $lines = explode("\n", trim($content));
